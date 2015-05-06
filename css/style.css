@@ -73,6 +73,25 @@ body {
     background: #dadada;
 }
 
+.sidebar {
+    margin-top: 60px;
+    width: 15%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #d9f8ff;
+}
+
+.sidebar.right {
+    right: 0;
+    left: auto;
+}
+
+.sidebar.left {
+    left: 0;
+    right: auto;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     /* Remove the padding we set earlier */
