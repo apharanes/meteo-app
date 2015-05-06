@@ -64,6 +64,11 @@ body {
     top: 20px;
 }
 
+#map-canvas {
+    width: 100%;
+    height: 500px;
+}
+
 .city {
     padding: 10px;
     border: 1px solid #dadada;

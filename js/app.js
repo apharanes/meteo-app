@@ -7,7 +7,9 @@ define([
     'regions/dialog',
 	'collections/Nav',
     'collections/CitiesCollection',
+    'views/map/MapView',
     'views/map/CityListView'
+], function (Backbone, Marionette, NotifyRegion, DialogRegion, Nav, CitiesCollection, Footer, MapView, CityListView) {
 	'use strict';
 
 	var app = new Marionette.Application();
@@ -31,11 +33,13 @@ define([
             selector: "#dialog",
             regionType: DialogRegion
         },
+        map: '#map-container',
         cityList: '#city-list'
 	});
 
 	app.addInitializer(function () {
 		app.footer.show(new Footer());
+		app.map.show(new MapView());
         app.cityList.show(cityList);
 	});
 

@@ -6,6 +6,10 @@
     "requirejs": "~2.1.6",
     "underscore": "~1.4.4",
     "backbone.marionette": "~1.0.3",
-    "backbone.localStorage": "~1.1.4"
+    "backbone.localStorage": "~1.1.4",
+    "requirejs-plugins": "~1.0.3"
+  },
+  "resolutions": {
+    "underscore": ">=1.5.0"
   }
 }

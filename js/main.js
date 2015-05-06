@@ -1,6 +1,7 @@
 require.config({
 	paths: {
 		underscore: '../bower_components/underscore/underscore',
+        async: '../bower_components/requirejs-plugins/src/async',
 		backbone: '../bower_components/backbone/backbone',
 		marionette: '../bower_components/backbone.marionette/lib/backbone.marionette',
 		jquery: '../bower_components/jquery/jquery',
