@@ -66,15 +66,6 @@ define([
                 title: 'Default City'
             });
             self.addCity(marker);
-
-            _.each(this.CitiesCollection.models, function(item){
-                var newMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(item.attributes.latitude, item.attributes.longitude),
-                    title: item.attributes.title
-                });
-                newMarker.setMap(map);
-                self.addCity(newMarker);
-            });
             marker.setMap(map);
         },
 
