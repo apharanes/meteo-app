@@ -13,12 +13,7 @@ define([
 	'use strict';
 
 	var app = new Marionette.Application();
-
-    var citiesSample = new CitiesCollection([
-        { title: 'City  1', latitude: 2.2, longitude: 1.1},
-        { title: 'City  2', latitude: 2.2, longitude: 1.1},
-        { title: 'City  2', latitude: 2.2, longitude: 1.1}
-    ]);
+    var citiesSample = new CitiesCollection([]);
 
     var cityList = new CityListView({collection: citiesSample});
 
@@ -39,7 +34,7 @@ define([
 
 	app.addInitializer(function () {
 		app.footer.show(new Footer());
-		app.map.show(new MapView());
+		app.map.show(new MapView({collection: citiesSample}));
         app.cityList.show(cityList);
 	});
 
