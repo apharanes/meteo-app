@@ -6,13 +6,14 @@ define([
     'marionette',
     'templates',
     'underscore',
+    'jquery',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places',
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
 ], function (Marionette, templates) {
     'use strict';
 
     var defaultCenterLocation = new google.maps.LatLng(45.7772, 3.087);
-    var map, places, autocomplete;
+    var map, places, autocomplete, infowindow;
 
 
     // load google.maps
@@ -49,6 +50,10 @@ define([
                 var city = self.onPlaceChanged();
                 self.addCity(city);
             });
+
+            infowindow = new google.maps.InfoWindow({
+                content: 'Test Info Data'
+            });
         },
 
         onShow: function () {
@@ -70,6 +75,7 @@ define([
                 newMarker.setMap(map);
                 self.addCity(newMarker);
             });
+            marker.setMap(map);
         },
 
         /**
@@ -93,7 +99,33 @@ define([
         },
 
         addCity: function (city) {
-            this.CitiesCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
+            var self = this;
+
+            self.CitiesCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
+
+            $.ajax({
+                url: 'http://api.openweathermap.org/data/2.5/forecast?APPID=020ad27651aa20936db3c2a857fd5052&lat=' + city.latitude +'&lon=' + city.longitude,
+                success: function (result) {
+                    // get Latest Weather Info
+
+                    var latestWeatherInfo = result.list[result.list.length-1];
+
+                    var cityInfo = _.extend(city, {
+                        weatherInfo: {
+                            temp: latestWeatherInfo.main.temp,
+                            weather: {
+                                main: latestWeatherInfo.weather[0].main,
+                                icon: latestWeatherInfo.weather[0].icon
+                            }
+                        }
+                    });
+
+                    google.maps.event.addListener(city, 'click', function () {
+                        infowindow.setContent(cityInfo.title +' '+ cityInfo.weatherInfo.weather.main +' '+ cityInfo.weatherInfo.weather.icon);
+                        infowindow.open(map, city);
+                    });
+                }
+            });
         }
     });
 });
