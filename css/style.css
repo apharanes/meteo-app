@@ -64,6 +64,15 @@ body {
     top: 20px;
 }
 
+.city {
+    padding: 10px;
+    border: 1px solid #dadada;
+}
+
+.city .title {
+    background: #dadada;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     /* Remove the padding we set earlier */

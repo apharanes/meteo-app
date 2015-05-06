@@ -27,6 +27,8 @@ define([
                     Example.start();
                 });
             }
+
+            app.vent.trigger('cityList:activate');
 		},
         hello: function() {
             console.log('In route /hi');

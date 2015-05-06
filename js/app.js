@@ -6,11 +6,19 @@ define([
     'regions/notification',
     'regions/dialog',
 	'collections/Nav',
+    'collections/CitiesCollection',
+    'views/map/CityListView'
 	'use strict';
 
 	var app = new Marionette.Application();
 
+    var citiesSample = new CitiesCollection([
+        { title: 'City  1', latitude: 2.2, longitude: 1.1},
+        { title: 'City  2', latitude: 2.2, longitude: 1.1},
+        { title: 'City  2', latitude: 2.2, longitude: 1.1}
     ]);
+
+    var cityList = new CityListView({collection: citiesSample});
 
 	app.addRegions({
 		main: '#main',
@@ -22,11 +30,13 @@ define([
         dialog: {
             selector: "#dialog",
             regionType: DialogRegion
-        }
+        },
+        cityList: '#city-list'
 	});
 
 	app.addInitializer(function () {
 		app.footer.show(new Footer());
+        app.cityList.show(cityList);
 	});
 
     app.on("initialize:after", function(options){
@@ -35,6 +45,9 @@ define([
         }
     });
 
+    app.vent.on('cityList:activate', function () {
+        cityList.render();
+    });
 
     /**
      * Sample JSON Data
