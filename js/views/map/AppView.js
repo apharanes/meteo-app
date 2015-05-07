@@ -10,8 +10,13 @@ define([
 ], function (Marionette, $, templates) {
     'use strict';
 
-    return Marionette.ItemView.extend({
+    return Marionette.LayoutView.extend({
         template: templates.map,
+
+        regions: {
+            map: '#map-container',
+            cityList: '#city-list'
+        },
 
         initialize: function (options) {
             var self = this;
@@ -37,6 +42,11 @@ define([
             google.maps.event.addListener(self.map, 'idle', function () {
                 google.maps.event.trigger(self.map, 'resize');
             });
+        },
+
+        initializeCityList:  function () {
+            var self = this;
+
         },
 
         onShow: function () {
