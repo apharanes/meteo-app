@@ -123,8 +123,7 @@ define([
                         })
                     };
 
-                    self.addMapPoint(newMapPoint);
-                    newMapPoint.infoWindow.open(self.map, city);
+                    self.addMapPoint(newMapPoint, city);
                 }
             });
         },
@@ -134,6 +133,7 @@ define([
 
             self.renderMapPointInfoWindowContent(mapPoint);
             self.mapPointCollection.add(mapPoint);
+            mapPoint.infoWindow.open(self.map, city);
         },
 
         parseWeatherResults: function (result) {
