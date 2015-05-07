@@ -22,6 +22,7 @@ define([
      * @type {{latitude: number, longitude: number}}
      */
     var defaultCenter = {
+        title: 'Clermont-Ferrand',
         latitude: 45.7772,
         longitude: 3.087
     };
