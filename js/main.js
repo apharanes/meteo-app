@@ -10,7 +10,8 @@ require.config({
         bootstrap: 'lib/bootstrap.min',
         moment: '../bower_components/moment/moment',
         momentTz: '../bower_components/moment-timezone/builds/moment-timezone-with-data',
-        utility: '../js/utility/utility'
+        utility: '../js/utility/utility',
+        weatherUtility: '../js/utility/weatherUtility'
 	},
 
 	shim: {
