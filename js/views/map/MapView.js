@@ -28,6 +28,10 @@ define([
             self.defaultCenterLocation = new google.maps.LatLng(options.defaultCenter.latitude, options.defaultCenter.longitude);
             self.cityCollection = options.collection;
             self.mapPointCollection = new MapPointCollection([]);
+
+            self.timer = setInterval(function(){
+                self.refreshWeatherData();
+            }, 60000);
         },
 
         initializeMap: function () {
@@ -113,28 +117,37 @@ define([
                 url: 'https://api.forecast.io/forecast/223ac36a3da5993f7f14cbf3e35a399a/'+city.position.k+','+city.position.D,
                 dataType: 'jsonp',
                 success: function (result) {
+
                     var latestWeatherInfo = self.parseWeatherResults(result);
 
                     var newMapPoint = {
                         title: city.title,
                         latitude: city.position.k,
                         longitude: city.position.D,
-                        weatherInfo: latestWeatherInfo
                         weatherInfo: latestWeatherInfo,
                         timezone: result.timezone
                     };
 
                     newMapPoint.infoWindow = new google.maps.InfoWindow({
-                        content: self.renderMapPointInfoWindowContent(newMapPoint)
+                        content: ''
                     });
+
+                    self.renderMapPointInfoWindowContent(newMapPoint);
+
+                    self.addMapPoint(newMapPoint);
 
                     newMapPoint.infoWindow.open(self.map, city);
                 }
             });
         },
 
-        parseWeatherResults: function (result) {
+        addMapPoint: function (mapPoint) {
+            var self = this;
 
+            self.mapPointCollection.add(mapPoint);
+        },
+
+        parseWeatherResults: function (result) {
             return {
                 time: result.currently.time,
                 temp: result.currently.temperature,
@@ -145,8 +158,18 @@ define([
         },
 
         renderMapPointInfoWindowContent: function (mapPoint) {
-            return mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' +
-                utility.convertTimeToHumanReadableFormat(mapPoint.weatherInfo.time, mapPoint.timezone);
+            var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' +
+                utility.convertTimeToHumanReadableFormat(mapPoint.timezone);
+
+            mapPoint.infoWindow.setContent(content);
+        },
+
+        refreshWeatherData: function () {
+            var self = this;
+
+            _.each(self.mapPointCollection.models, function(mapPoint) {
+                self.renderMapPointInfoWindowContent(mapPoint.attributes);
+            });
         }
     });
 });

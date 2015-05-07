@@ -12,8 +12,8 @@ define([
 
         },
 
-        convertTimeToHumanReadableFormat: function (timeInSeconds, timezone) {
-            var localTime = Moment.tz(new Date(timeInSeconds * 1000), timezone);
+        convertTimeToHumanReadableFormat: function (timezone) {
+            var localTime = Moment().tz(timezone);
 
             return Moment(localTime).format('D MMM YYYY, h:mm a');
         }
