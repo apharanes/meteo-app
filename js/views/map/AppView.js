@@ -13,43 +13,18 @@ define([
     'use strict';
 
     return Marionette.LayoutView.extend({
-        template: templates.map,
+        template: templates.app,
 
         regions: {
+            mapView: '#map-container',
             cityList: '#city-list'
         },
 
         initialize: function (options) {
             var self = this;
 
-            console.log(options.collection);
             self.defaultCenterLocation = new google.maps.LatLng(45.7772, 3.087);
             self.cityCollection = options.collection;
-        },
-
-        initializeMap: function () {
-            var self = this;
-            var mapOptions = {
-                center: self.defaultCenterLocation,
-                zoom: 6,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-            self.places = new google.maps.places.PlacesService(self.map);
-            self.autocomplete = new google.maps.places.Autocomplete(
-                (document.getElementById('search-autocomplete')),
-                { types: ['(cities)'] }
-            );
-
-            google.maps.event.addListener(self.map, 'idle', function () {
-                google.maps.event.trigger(self.map, 'resize');
-            });
-        },
-
-        initializeCityList:  function () {
-            var self = this;
-
         },
 
         setCitiesOnMap: function () {
@@ -63,8 +38,6 @@ define([
 
         onShow: function () {
             var self = this;
-
-            self.initializeMap();
             self.setCitiesOnMap();
         }
     });

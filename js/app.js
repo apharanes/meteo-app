@@ -17,7 +17,13 @@ define([
 	var app = new Marionette.Application();
     var citiesSample = new CitiesCollection([{title:'Clermont', latitude:45.7772, longitude: 3.087},{title:'City 2', latitude:46.7772, longitude: 4.087}]);
 
+    var defaultCenter = {
+        latitude: 45.7772,
+        longitude: 3.087
+    };
+
     var cityList = new CityListView({collection: citiesSample});
+    var mapView = new MapView({collection: citiesSample, defaultCenter: defaultCenter});
     var appView = new AppView({collection: citiesSample});
 
 	app.addRegions({
@@ -38,6 +44,7 @@ define([
 		app.footer.show(new Footer());
         app.appView.show(appView);
 
+        appView.mapView.show(mapView);
         appView.cityList.show(cityList);
 	});
 

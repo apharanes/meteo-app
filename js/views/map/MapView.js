@@ -7,30 +7,31 @@ define([
     'templates',
     'underscore',
     'jquery',
-    'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places',
+    'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
 ], function (Marionette, templates) {
     'use strict';
 
-    var defaultCenterLocation = new google.maps.LatLng(45.7772, 3.087);
     var map, places, autocomplete, infowindow;
 
 
     // load google.maps
     return Marionette.ItemView.extend({
-
-
         template: templates.map,
 
         initialize: function(options) {
-            this.CitiesCollection = options.collection;
+            var self = this;
+
+            self.defaultCenterLocation = new google.maps.LatLng(options.defaultCenter.latitude, options.defaultCenter.longitude);
+            self.CitiesCollection = options.collection;
+
         },
 
         initializeMap: function () {
             var self = this;
 
             var mapOptions = {
-                center: defaultCenterLocation,
+                center: self.defaultCenterLocation,
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -62,7 +63,7 @@ define([
 
             var markers = [];
             var marker = new google.maps.Marker({
-                position: defaultCenterLocation,
+                position: self.defaultCenterLocation,
                 title: 'Default City'
             });
             self.addCity(marker);
