@@ -8,9 +8,10 @@ define([
     'jquery',
     'templates',
     'views/map/MapPointView',
+    'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-], function (Marionette, _, $, templates, MapPointView) {
+], function (Marionette, _, $, templates, MapPointView, MapPointCollection) {
     'use strict';
 
     var places, autocomplete, infowindow;
@@ -25,6 +26,7 @@ define([
 
             self.defaultCenterLocation = new google.maps.LatLng(options.defaultCenter.latitude, options.defaultCenter.longitude);
             self.cityCollection = options.collection;
+            self.mapPointCollection = new MapPointCollection([]);
         },
 
         initializeMap: function () {
@@ -90,7 +92,7 @@ define([
          */
         onPlaceChanged: function () {
             var self = this;
-            var place = autocomplete.getPlace();
+            var place = self.autocomplete.getPlace();
 
             if(place.geometry){
                 var newMarker = new google.maps.Marker({
@@ -111,28 +113,41 @@ define([
             self.cityCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
 
             $.ajax({
-                url: 'http://api.openweathermap.org/data/2.5/forecast?APPID=020ad27651aa20936db3c2a857fd5052&lat=' + city.latitude +'&lon=' + city.longitude,
+                url: 'https://api.forecast.io/forecast/223ac36a3da5993f7f14cbf3e35a399a/'+city.position.k+','+city.position.D,
+                dataType: 'jsonp',
                 success: function (result) {
-                    // get Latest Weather Info
+                    var latestWeatherInfo = self.parseWeatherResults(result);
 
-                    var latestWeatherInfo = result.list[result.list.length-1];
-
-                    var cityInfo = _.extend(city, {
-                        weatherInfo: {
-                            temp: latestWeatherInfo.main.temp,
-                            weather: {
-                                main: latestWeatherInfo.weather[0].main,
-                                icon: latestWeatherInfo.weather[0].icon
-                            }
-                        }
-                    });
+                    var newMapPoint = {
+                        title: city.title,
+                        latitude: city.position.k,
+                        longitude: city.position.D,
+                        weatherInfo: latestWeatherInfo
+                    };
 
                     google.maps.event.addListener(city, 'click', function () {
-                        infowindow.setContent(cityInfo.title +' '+ cityInfo.weatherInfo.weather.main +' '+ cityInfo.weatherInfo.weather.icon);
-                        infowindow.open(self.map, city);
+                        self.showMapPointInfo(city, newMapPoint);
                     });
                 }
             });
+        },
+
+        parseWeatherResults: function (result) {
+            console.log(result);
+            return {
+                time: result.currently.time,
+                temp: result.currently.temperature,
+                pressure: result.currently.pressure,
+                summary: result.currently.summary,
+                icon: result.currently.icon
+            }
+        },
+
+        showMapPointInfo: function (city, mapPoint) {
+            var self = this;
+            var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' + mapPoint.weatherInfo.time;
+            infowindow.setContent(content);
+            infowindow.open(self.map, city);
         }
     });
 });
