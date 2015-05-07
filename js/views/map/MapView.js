@@ -11,7 +11,7 @@ define([
     'weatherUtility',
     'views/map/MapPointView',
     'collections/MapPointCollection',
-    'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
+    'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
 ], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPointCollection) {
     'use strict';
