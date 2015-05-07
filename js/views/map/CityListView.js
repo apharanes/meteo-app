@@ -9,7 +9,7 @@ define([
     'use strict';
 
     return Marionette.CollectionView.extend({
-        itemView: CityView,
+        childView: CityView,
         tagName: 'div',
         className: 'list-group'
     });

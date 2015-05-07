@@ -15,7 +15,7 @@ define([
 	'use strict';
 
 	var app = new Marionette.Application();
-    var citiesSample = new CitiesCollection([]);
+    var citiesSample = new CitiesCollection([{title:'Clermont', latitude:45.7772, longitude: 3.087}]);
 
     var cityList = new CityListView({collection: citiesSample});
     var appView = new AppView();
@@ -31,14 +31,14 @@ define([
             selector: "#dialog",
             regionType: DialogRegion
         },
-        appView: '#app',
-        cityList: '#city-list'
+        appView: '#app'
 	});
 
 	app.addInitializer(function () {
 		app.footer.show(new Footer());
         app.appView.show(appView);
-        app.cityList.show(cityList);
+
+        appView.cityList.show(cityList);
 	});
 
     app.on("initialize:after", function(options){
