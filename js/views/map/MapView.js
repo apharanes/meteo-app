@@ -8,11 +8,12 @@ define([
     'jquery',
     'templates',
     'utility',
+    'weatherUtility',
     'views/map/MapPointView',
     'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-], function (Marionette, _, $, templates, utility, MapPointView, MapPointCollection) {
+], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPointCollection) {
     'use strict';
 
     var places, autocomplete, infowindow;
@@ -183,10 +184,40 @@ define([
          * @param mapPoint
          */
         renderMapPointInfoWindowContent: function (mapPoint) {
-            var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' +
-                utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
+            var self = this;
+
+            var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '
+                + mapPoint.weatherInfo.icon + ' '
+                + self.renderWeatherIcon(mapPoint.weatherInfo.icon, Date.now(), mapPoint.timezone)
+                + ' ' + self.renderTemp(mapPoint.weatherInfo.temp,'celsius') + ' '
+                + utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
 
             mapPoint.infoWindow.setContent(content);
+        },
+
+        /**
+         * Generate html content based on weather conditions and time
+         * @param icon
+         * @param time
+         * @param timezone
+         * @returns {string}
+         */
+        renderWeatherIcon: function (icon, time, timezone){
+            var weatherIcon = WeatherUtility.getIconClass(icon, time, timezone);
+
+            return '<span class="wi ' + weatherIcon +'"></span>';
+        },
+
+        /**
+         * Generate html content based on temperature and target unit
+         * @param temperature
+         * @param unit
+         * @returns {string}
+         */
+        renderTemp: function(temperature, unit){
+            var converted = utility.convertTemp(temperature, 'fahrenheit', unit);
+
+            return converted + '&#176' + unit[0].toUpperCase();
         },
 
         /**
