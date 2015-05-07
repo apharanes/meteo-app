@@ -17,6 +17,10 @@ define([
 	var app = new Marionette.Application();
     var citiesSample = new CitiesCollection([]);
 
+    /**
+     * Coordinates of the city of Clermont-Ferrand
+     * @type {{latitude: number, longitude: number}}
+     */
     var defaultCenter = {
         latitude: 45.7772,
         longitude: 3.087

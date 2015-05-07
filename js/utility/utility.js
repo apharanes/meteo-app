@@ -8,10 +8,25 @@ define([
 ], function(_, Moment) {
 
     return {
-        convertTemp: function () {
+
+        /**
+         * Convert a temperature reading between indicated units
+         *
+         * @param temperature
+         * @param fromUnit
+         * @param toUnit
+         */
+        convertTemp: function (temperature, fromUnit, toUnit) {
 
         },
 
+        /**
+         * Returns a human readable format of the current time
+         * based from a given timezone
+         *
+         * @param {String} timezone
+         * @returns {*}
+         */
         convertTimeZoneToHumanReadableFormat: function (timezone) {
             var localTime = Moment().tz(timezone);
 
