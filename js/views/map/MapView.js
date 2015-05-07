@@ -26,7 +26,8 @@ define([
         initialize: function(options) {
             var self = this;
 
-            self.defaultCenterLocation = new google.maps.LatLng(options.defaultCenter.latitude, options.defaultCenter.longitude);
+            self.defaultCenter = options.defaultCenter;
+            self.defaultCenterPosition = new google.maps.LatLng(self.defaultCenter.latitude, self.defaultCenter.longitude);
             self.cityCollection = options.collection;
             self.mapPointCollection = new MapPointCollection([]);
 
@@ -43,7 +44,7 @@ define([
             var self = this;
 
             var mapOptions = {
-                center: self.defaultCenterLocation,
+                center: self.defaultCenterPosition,
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -78,8 +79,8 @@ define([
             var self = this;
 
             var marker = new google.maps.Marker({
-                position: self.defaultCenterLocation,
-                title: 'Default City'
+                position: self.defaultCenterPosition,
+                title: self.defaultCenter.title
             });
             self.addCity(marker);
             marker.setMap(self.map);
