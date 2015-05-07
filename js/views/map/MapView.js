@@ -7,11 +7,12 @@ define([
     'underscore',
     'jquery',
     'templates',
+    'utility',
     'views/map/MapPointView',
     'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-], function (Marionette, _, $, templates, MapPointView, MapPointCollection) {
+], function (Marionette, _, $, templates, utility, MapPointView, MapPointCollection) {
     'use strict';
 
     var places, autocomplete, infowindow;
@@ -119,6 +120,8 @@ define([
                         latitude: city.position.k,
                         longitude: city.position.D,
                         weatherInfo: latestWeatherInfo
+                        weatherInfo: latestWeatherInfo,
+                        timezone: result.timezone
                     };
 
                     newMapPoint.infoWindow = new google.maps.InfoWindow({
@@ -142,7 +145,8 @@ define([
         },
 
         renderMapPointInfoWindowContent: function (mapPoint) {
-            return mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' + mapPoint.weatherInfo.time;
+            return mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' +
+                utility.convertTimeToHumanReadableFormat(mapPoint.weatherInfo.time, mapPoint.timezone);
         }
     });
 });
