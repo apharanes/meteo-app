@@ -4,7 +4,7 @@ require.config({
         async: '../bower_components/requirejs-plugins/src/async',
 		backbone: '../bower_components/backbone/backbone',
 		marionette: '../bower_components/backbone.marionette/lib/backbone.marionette',
-		jquery: '../bower_components/jquery/jquery',
+		jquery: '../bower_components/jquery/dist/jquery.min',
 		localStorage: '../bower_components/backbone.localStorage/backbone.localStorage',
 		tpl: 'lib/tpl',
         bootstrap: 'lib/bootstrap.min'
