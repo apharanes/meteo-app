@@ -28,9 +28,13 @@ define([
          * @returns {*}
          */
         convertTimeZoneToHumanReadableFormat: function (timezone) {
-            var localTime = Moment().tz(timezone);
+            var localTime = this.getCurrentTimeByTimeZone(Date.now(), timezone);
 
             return Moment(localTime).format('D MMM YYYY, h:mm a');
+        },
+
+        getCurrentTimeByTimeZone: function (time, timezone) {
+            return Moment(time).tz(timezone);
         }
     }
 });
