@@ -148,7 +148,7 @@ define([
 
         renderMapPointInfoWindowContent: function (mapPoint) {
             var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' +
-                utility.convertTimeToHumanReadableFormat(mapPoint.timezone);
+                utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
 
             mapPoint.infoWindow.setContent(content);
         },

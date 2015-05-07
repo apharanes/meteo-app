@@ -12,7 +12,7 @@ define([
 
         },
 
-        convertTimeToHumanReadableFormat: function (timezone) {
+        convertTimeZoneToHumanReadableFormat: function (timezone) {
             var localTime = Moment().tz(timezone);
 
             return Moment(localTime).format('D MMM YYYY, h:mm a');
