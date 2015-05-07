@@ -7,11 +7,16 @@ define([
     'utility',
     'momentTz'
 ], function (underscore, utility, Moment) {
+
     var TimeOfDay = {
         DAY: 'day',
         NIGHT: 'night'
     };
 
+    /**
+     * Lookup table for ForecastIO weathernames and weather icon set
+     * from @erikflowers
+     */
     var forecastIconSet = [
         {name: 'clear-day', timeOfDay: 'day', icon: 'wi-day-sunny'},
         {name: 'clear-night', timeOfDay: 'night', icon: 'wi-night-clear'},
@@ -32,6 +37,13 @@ define([
     ];
 
     return {
+        /**
+         * Get Icon Class based on weatherName and time of day
+         * @param weatherName
+         * @param time
+         * @param timezone
+         * @returns {string|exports.defaults.icon|exports.defaults.weatherInfo.icon|icon|exports.parseWeatherResults.icon|CSSStyleDeclaration.icon}
+         */
         getIconClass: function (weatherName, time, timezone){
             console.log(weatherName, time, timezone);
 
@@ -43,6 +55,12 @@ define([
             }).icon;
         },
 
+        /**
+         * Determine localized time of day
+         * @param time
+         * @param timezone
+         * @returns {string}
+         */
         getTimeOfDay: function (time, timezone) {
             var localTime = Moment(utility.getCurrentTimeByTimeZone(time, timezone));
             var hour = localTime.format('HH');
