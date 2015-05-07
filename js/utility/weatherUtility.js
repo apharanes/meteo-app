@@ -45,10 +45,6 @@ define([
          * @returns {string|exports.defaults.icon|exports.defaults.weatherInfo.icon|icon|exports.parseWeatherResults.icon|CSSStyleDeclaration.icon}
          */
         getIconClass: function (weatherName, time, timezone){
-            console.log(weatherName, time, timezone);
-
-            console.log(this.getTimeOfDay(time, timezone));
-
             return _.findWhere(forecastIconSet, {
                 timeOfDay: this.getTimeOfDay(time, timezone),
                 name: weatherName
