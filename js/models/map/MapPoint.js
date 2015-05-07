@@ -18,7 +18,8 @@ define([
                 summary: '',
                 icon: ''
             },
-            infoWindow: {}
+            infoWindow: {},
+            timezone: ''
         },
         fetchForecastInfo: function () {
             console.log('fetchForecastInfo');
