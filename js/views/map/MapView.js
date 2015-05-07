@@ -4,15 +4,16 @@
 
 define([
     'marionette',
-    'templates',
     'underscore',
     'jquery',
+    'templates',
+    'views/map/MapPointView',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
     //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-], function (Marionette, templates) {
+], function (Marionette, _, $, templates, MapPointView) {
     'use strict';
 
-    var map, places, autocomplete, infowindow;
+    var places, autocomplete, infowindow;
 
 
     // load google.maps
@@ -23,8 +24,7 @@ define([
             var self = this;
 
             self.defaultCenterLocation = new google.maps.LatLng(options.defaultCenter.latitude, options.defaultCenter.longitude);
-            self.CitiesCollection = options.collection;
-
+            self.cityCollection = options.collection;
         },
 
         initializeMap: function () {
@@ -36,18 +36,18 @@ define([
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-            places = new google.maps.places.PlacesService(map);
-            autocomplete = new google.maps.places.Autocomplete(
+            self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            self.places = new google.maps.places.PlacesService(self.map);
+            self.autocomplete = new google.maps.places.Autocomplete(
                 (document.getElementById('search-autocomplete')),
                 { types: ['(cities)'] }
             );
 
-            google.maps.event.addListener(map, 'idle', function () {
-                google.maps.event.trigger(map, 'resize');
+            google.maps.event.addListener(self.map, 'idle', function () {
+                google.maps.event.trigger(self.map, 'resize');
             });
 
-            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            google.maps.event.addListener(self.autocomplete, 'place_changed', function () {
                 var city = self.onPlaceChanged();
                 self.addCity(city);
             });
@@ -57,24 +57,39 @@ define([
             });
         },
 
-        onShow: function () {
-            this.initializeMap();
+        setDefaultLocationOnMap: function () {
             var self = this;
 
-            var markers = [];
             var marker = new google.maps.Marker({
                 position: self.defaultCenterLocation,
                 title: 'Default City'
             });
             self.addCity(marker);
-            marker.setMap(map);
+            marker.setMap(self.map);
+        },
+
+        setCitiesOnMap: function () {
+            var self = this;
+
+            var mapPoints = [];
+            _.each(self.cityCollection.models, function(city) {
+                mapPoints.push(new MapPointView({map: self.map, model: city.attributes}));
+            });
+        },
+
+        onShow: function () {
+            var self = this;
+
+            self.initializeMap();
+            self.setDefaultLocationOnMap();
+            self.setCitiesOnMap();
         },
 
         /**
          * Event handlers
          */
-
         onPlaceChanged: function () {
+            var self = this;
             var place = autocomplete.getPlace();
 
             if(place.geometry){
@@ -83,8 +98,8 @@ define([
                     position: place.geometry.location
                 });
 
-                newMarker.setMap(map);
-                map.panTo(place.geometry.location);
+                newMarker.setMap(self.map);
+                self.map.panTo(place.geometry.location);
 
                 return newMarker;
             }
@@ -93,7 +108,7 @@ define([
         addCity: function (city) {
             var self = this;
 
-            self.CitiesCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
+            self.cityCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
 
             $.ajax({
                 url: 'http://api.openweathermap.org/data/2.5/forecast?APPID=020ad27651aa20936db3c2a857fd5052&lat=' + city.latitude +'&lon=' + city.longitude,
@@ -114,7 +129,7 @@ define([
 
                     google.maps.event.addListener(city, 'click', function () {
                         infowindow.setContent(cityInfo.title +' '+ cityInfo.weatherInfo.weather.main +' '+ cityInfo.weatherInfo.weather.icon);
-                        infowindow.open(map, city);
+                        infowindow.open(self.map, city);
                     });
                 }
             });

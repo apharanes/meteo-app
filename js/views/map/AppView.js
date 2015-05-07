@@ -27,18 +27,8 @@ define([
             self.cityCollection = options.collection;
         },
 
-        setCitiesOnMap: function () {
-            var self = this;
-
-            var mapPoints = [];
-            _.each(self.cityCollection.models, function(city) {
-                mapPoints.push(new MapPointView({map: self.map, model: city.attributes}));
-            });
-        },
-
         onShow: function () {
             var self = this;
-            self.setCitiesOnMap();
         }
     });
 });
