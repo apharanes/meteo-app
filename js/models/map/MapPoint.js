@@ -17,7 +17,8 @@ define([
                 pressure: 0.0,
                 summary: '',
                 icon: ''
-            }
+            },
+            infoWindow: {}
         },
         fetchForecastInfo: function () {
             console.log('fetchForecastInfo');
