@@ -27,12 +27,21 @@
 
             <div id="notification"></div><!-- /#notification -->
 
-            <div id="main">
-                <div id="map-container"></div>
+            <div id="main" class="row">
+
+                <div id="app" class="col-lg-9"></div>
+
+                <div class="col-lg-3">
+                    <div id="city-list" class="list-group"></div>
+                </div>
             </div>
 
-            <div class="footer" id="footer">
+            <div id="status-bar">
+                Current Location:
+                <button type="button" class="btn btn-default">Visit</button>
             </div>
+
+            <div class="footer" id="footer"></div>
 
             <!-- To be used as modal and notifications-->
             <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-hidden="true">

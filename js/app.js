@@ -7,15 +7,18 @@ define([
     'regions/dialog',
 	'collections/Nav',
     'collections/CitiesCollection',
+    'views/Footer',
+    'views/map/AppView',
     'views/map/MapView',
     'views/map/CityListView'
-], function (Backbone, Marionette, NotifyRegion, DialogRegion, Nav, CitiesCollection, Footer, MapView, CityListView) {
+], function (Backbone, Marionette, NotifyRegion, DialogRegion, Nav, CitiesCollection, Footer, AppView, MapView, CityListView) {
 	'use strict';
 
 	var app = new Marionette.Application();
     var citiesSample = new CitiesCollection([]);
 
     var cityList = new CityListView({collection: citiesSample});
+    var appView = new AppView();
 
 	app.addRegions({
 		main: '#main',
@@ -28,13 +31,13 @@ define([
             selector: "#dialog",
             regionType: DialogRegion
         },
-        map: '#map-container',
+        appView: '#app',
         cityList: '#city-list'
 	});
 
 	app.addInitializer(function () {
 		app.footer.show(new Footer());
-		app.map.show(new MapView({collection: citiesSample}));
+        app.appView.show(appView);
         app.cityList.show(cityList);
 	});
 
@@ -45,6 +48,7 @@ define([
     });
 
     app.vent.on('cityList:activate', function () {
+        appView.render();
         cityList.render();
     });
 
