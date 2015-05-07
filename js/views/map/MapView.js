@@ -80,14 +80,6 @@ define([
             });
         },
 
-        onShow: function () {
-            var self = this;
-
-            self.initializeMap();
-            self.setDefaultLocationOnMap();
-            self.setCitiesOnMap();
-        },
-
         /**
          * Event handlers
          */
@@ -125,17 +117,13 @@ define([
                         latitude: city.position.k,
                         longitude: city.position.D,
                         weatherInfo: latestWeatherInfo,
-                        timezone: result.timezone
+                        timezone: result.timezone,
+                        infoWindow: new google.maps.InfoWindow({
+                            content: ''
+                        })
                     };
 
-                    newMapPoint.infoWindow = new google.maps.InfoWindow({
-                        content: ''
-                    });
-
-                    self.renderMapPointInfoWindowContent(newMapPoint);
-
                     self.addMapPoint(newMapPoint);
-
                     newMapPoint.infoWindow.open(self.map, city);
                 }
             });
@@ -144,6 +132,7 @@ define([
         addMapPoint: function (mapPoint) {
             var self = this;
 
+            self.renderMapPointInfoWindowContent(mapPoint);
             self.mapPointCollection.add(mapPoint);
         },
 
@@ -170,6 +159,15 @@ define([
             _.each(self.mapPointCollection.models, function(mapPoint) {
                 self.renderMapPointInfoWindowContent(mapPoint.attributes);
             });
+        },
+
+        onShow: function () {
+            var self = this;
+
+            // Setup elements after bootstrapping of MapView
+            self.initializeMap();
+            self.setDefaultLocationOnMap();
+            self.setCitiesOnMap();
         }
     });
 });
