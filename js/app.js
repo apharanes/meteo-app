@@ -15,7 +15,7 @@ define([
 	'use strict';
 
 	var app = new Marionette.Application();
-    var citiesSample = new CitiesCollection([{title:'Clermont', latitude:45.7772, longitude: 3.087},{title:'City 2', latitude:46.7772, longitude: 4.087}]);
+    var citiesSample = new CitiesCollection([]);
 
     var defaultCenter = {
         latitude: 45.7772,
