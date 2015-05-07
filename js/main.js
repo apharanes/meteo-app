@@ -7,7 +7,10 @@ require.config({
 		jquery: '../bower_components/jquery/dist/jquery.min',
 		localStorage: '../bower_components/backbone.localStorage/backbone.localStorage',
 		tpl: 'lib/tpl',
-        bootstrap: 'lib/bootstrap.min'
+        bootstrap: 'lib/bootstrap.min',
+        moment: '../bower_components/moment/moment',
+        momentTz: '../bower_components/moment-timezone/builds/moment-timezone-with-data',
+        utility: '../js/utility/utility'
 	},
 
 	shim: {
