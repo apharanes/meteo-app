@@ -9,15 +9,7 @@ define([
         defaults: {
             title: '',
             latitude: 0.0,
-            longitude: 0.0,
-            weatherInfo: {
-                temp: 0.0,
-                pressure: 0.0,
-                weather: {
-                    main: '',
-                    icon: ''
-                }
-            }
+            longitude: 0.0
         }
     });
 });

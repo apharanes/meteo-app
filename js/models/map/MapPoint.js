@@ -11,7 +11,13 @@ define([
             name: '',
             latitude: 0.0,
             longitude: 0.0,
-            forecast: {}
+            weatherInfo: {
+                time: 0,
+                temp: 0.0,
+                pressure: 0.0,
+                summary: '',
+                icon: ''
+            }
         },
         fetchForecastInfo: function () {
             console.log('fetchForecastInfo');
