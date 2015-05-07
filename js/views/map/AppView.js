@@ -9,7 +9,7 @@ define([
     'templates',
     'views/map/MapPointView',
     'async!https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTqFR5xcTYxrD4vLWIwfaiqQMAXMWfzXQ&sensor=false&libraries=places'
-], function (Marionette, _, $, templates, MapPointView) {
+], function (Marionette, _, $, templates) {
     'use strict';
 
     return Marionette.LayoutView.extend({
