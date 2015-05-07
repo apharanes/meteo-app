@@ -53,10 +53,6 @@ define([
                 var city = self.onPlaceChanged();
                 self.addCity(city);
             });
-
-            infowindow = new google.maps.InfoWindow({
-                content: 'Test Info Data'
-            });
         },
 
         setDefaultLocationOnMap: function () {
@@ -125,14 +121,17 @@ define([
                         weatherInfo: latestWeatherInfo
                     };
 
-                    google.maps.event.addListener(city, 'click', function () {
-                        self.showMapPointInfo(city, newMapPoint);
+                    newMapPoint.infoWindow = new google.maps.InfoWindow({
+                        content: self.renderMapPointInfoWindowContent(newMapPoint)
                     });
+
+                    newMapPoint.infoWindow.open(self.map, city);
                 }
             });
         },
 
         parseWeatherResults: function (result) {
+
             return {
                 time: result.currently.time,
                 temp: result.currently.temperature,
@@ -142,12 +141,8 @@ define([
             }
         },
 
-        showMapPointInfo: function (city, mapPoint) {
-            var self = this;
-
-            var content = mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' + mapPoint.weatherInfo.time;
-            infowindow.setContent(content);
-            infowindow.open(self.map, city);
+        renderMapPointInfoWindowContent: function (mapPoint) {
+            return mapPoint.title +' '+ mapPoint.weatherInfo.summary +' '+ mapPoint.weatherInfo.icon + ' ' + mapPoint.weatherInfo.temp + ' ' + mapPoint.weatherInfo.time;
         }
     });
 });
