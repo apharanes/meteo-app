@@ -5,8 +5,10 @@
 define([
     'marionette',
     'templates',
-    'models/map/MapPoint'
-], function (Marionette, templates, MapPoint) {
+    'models/map/MapPoint',
+    'utility',
+    'weatherUtility'
+], function (Marionette, templates, MapPoint, utility, WeatherUtility) {
     'use strict';
 
     return Marionette.ItemView.extend({
@@ -18,15 +20,22 @@ define([
             var self = this;
 
             self.map = options.map;
-            self.model = options.model;
+            self.marker = options.marker;
+            self.model = new MapPoint(self.marker);
+            self.mapPoint = self.model.attributes;
 
-            self.marker = new google.maps.Marker({
-                map: self.map,
-                position: new google.maps.LatLng(self.model.latitude, self.model.longitude),
-                title: self.model.title
-            });
+            self.render();
+        },
+
+        render: function () {
+            var self = this;
 
             self.marker.setMap(self.map);
+
+            self.model.fetchWeatherInfo()
+                .then(function () {
+                    self.mapPoint.infoWindow.open(self.map, self.marker);
+                });
         }
     });
 });

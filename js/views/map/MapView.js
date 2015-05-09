@@ -10,14 +10,11 @@ define([
     'utility',
     'weatherUtility',
     'views/map/MapPointView',
+    'models/map/MapPoint',
     'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=places'
-    //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPointCollection) {
+], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPoint, MapPointCollection) {
     'use strict';
-
-    var places, autocomplete, infowindow;
-
 
     // load google.maps
     return Marionette.ItemView.extend({
@@ -82,8 +79,8 @@ define([
                 position: self.defaultCenterPosition,
                 title: self.defaultCenter.title
             });
-            self.addCity(marker);
-            marker.setMap(self.map);
+
+            self.addMapPoint(marker);
         },
 
         /**
@@ -111,9 +108,7 @@ define([
                     position: place.geometry.location
                 });
 
-                newMarker.setMap(self.map);
-                self.map.panTo(place.geometry.location);
-
+                self.addMapPoint(newMarker);
                 return newMarker;
             }
         },
@@ -128,98 +123,17 @@ define([
             self.cityCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
 
             // Uses Forecast.IO API
-            $.ajax({
-                url: 'https://api.forecast.io/forecast/223ac36a3da5993f7f14cbf3e35a399a/'+city.position.k+','+city.position.D,
-                dataType: 'jsonp',
-                success: function (result) {
-
-                    // Fetch only latest weather data for city
-                    var latestWeatherInfo = self.parseWeatherResults(result);
-
-                    var newMapPoint = {
-                        title: city.title,
-                        latitude: city.position.k,
-                        longitude: city.position.D,
-                        weatherInfo: latestWeatherInfo,
-                        timezone: result.timezone,
-                        infoWindow: new google.maps.InfoWindow({
-                            content: ''
-                        })
-                    };
-
-                    self.addMapPoint(newMapPoint, city);
-                }
-            });
         },
 
         /**
          * Add MapPoint instance to Map and cache to MapPointCollection
          * @param mapPoint
          */
-        addMapPoint: function (mapPoint, city) {
+        addMapPoint: function (marker) {
             var self = this;
 
-            self.renderMapPointInfoWindowContent(mapPoint);
-            self.mapPointCollection.add(mapPoint);
-            mapPoint.infoWindow.open(self.map, city);
-        },
-
-        /**
-         * Custom parser for weather data fetched from the API
-         * @param result
-         * @returns {Object} weatherInfo field of MapPoint model
-         */
-        parseWeatherResults: function (result) {
-            return {
-                time: result.currently.time,
-                temp: result.currently.temperature,
-                pressure: result.currently.pressure,
-                summary: result.currently.summary,
-                icon: result.currently.icon
-            }
-        },
-
-        /**
-         * Render content for InfoWindow of a specific city on the map
-         *
-         * @param mapPoint
-         */
-        renderMapPointInfoWindowContent: function (mapPoint) {
-            var self = this;
-
-            var content =
-                '<label>City:</label> ' + mapPoint.title +'<br />' +
-                ' <label>Weather:</label> '+
-                    self.renderWeatherIcon(mapPoint.weatherInfo.icon, Date.now(), mapPoint.timezone) + ' ' + mapPoint.weatherInfo.summary +'<br />' +
-                '<label>Temperature:</label> ' + self.renderTemp(mapPoint.weatherInfo.temp,'celsius') + '<br />' +
-                '<label>Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
-
-            mapPoint.infoWindow.setContent(content);
-        },
-
-        /**
-         * Generate html content based on weather conditions and time
-         * @param icon
-         * @param time
-         * @param timezone
-         * @returns {string}
-         */
-        renderWeatherIcon: function (icon, time, timezone){
-            var weatherIcon = WeatherUtility.getIconClass(icon, time, timezone);
-
-            return '<span class="wi ' + weatherIcon +'"></span>';
-        },
-
-        /**
-         * Generate html content based on temperature and target unit
-         * @param temperature
-         * @param unit
-         * @returns {string}
-         */
-        renderTemp: function(temperature, unit){
-            var converted = utility.convertTemp(temperature, 'fahrenheit', unit);
-
-            return converted + '&#176' + unit[0].toUpperCase();
+            //self.map.panTo(marker);
+            var mapPointView = new MapPointView({map: self.map, marker: marker});
         },
 
         /**
@@ -229,7 +143,7 @@ define([
             var self = this;
 
             _.each(self.mapPointCollection.models, function(mapPoint) {
-                self.renderMapPointInfoWindowContent(mapPoint.attributes);
+                mapPoint.renderMapPointInfoWindowContent();
             });
         },
 
