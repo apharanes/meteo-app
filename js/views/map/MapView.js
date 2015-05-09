@@ -12,12 +12,8 @@ define([
     'views/map/MapPointView',
     'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=places'
-    //'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
 ], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPointCollection) {
     'use strict';
-
-    var places, autocomplete, infowindow;
-
 
     // load google.maps
     return Marionette.ItemView.extend({
