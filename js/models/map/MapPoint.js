@@ -65,12 +65,14 @@ define([
          * @returns {Object} weatherInfo field of MapPoint model
          */
         parseWeatherResults: function (result) {
+            var current = result['currently'];
+
             return {
-                time: result.currently.time,
-                temp: result.currently.temperature,
-                pressure: result.currently.pressure,
-                summary: result.currently.summary,
-                icon: result.currently.icon
+                time: current.time,
+                temp: current.temperature,
+                pressure: current.pressure,
+                summary: current.summary,
+                icon: current.icon
             }
         },
 
