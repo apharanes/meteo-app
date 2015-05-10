@@ -85,7 +85,9 @@ define([
 
             var content =
                 '<div class="city-weather-icon">' + self.renderWeatherIcon(self.mapPoint.weatherInfo.icon, Date.now(), self.mapPoint.timezone) + '</div>' +
-                '<label>City:</label> ' + self.mapPoint.name +'<br />' +
+                '<div class="city-title">' +
+                    self.mapPoint.name +'<br />' +
+                '</div>' +
                 ' <label>Weather:</label> '+ self.mapPoint.weatherInfo.summary +'<br />' +
                 '<label>Temperature:</label> ' + self.renderTemp(self.mapPoint.weatherInfo.temp,'celsius') + '<br />' +
                 '<label>Local Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(self.mapPoint.timezone);

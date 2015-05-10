@@ -84,6 +84,11 @@ body {
     right: 0;
 }
 
+.city-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .sidebar {
     margin-top: 60px;
     width: 15%;
