@@ -26,6 +26,7 @@ define([
         {name: 'wind', timeOfDay: 'day', icon: 'wi-day-windy'},
         {name: 'fog', timeOfDay: 'day', icon: 'wi-day-fog'},
         {name: 'cloudy', timeOfDay: 'day', icon: 'wi-day-cloudy'},
+        {name: 'partly-cloudy', timeOfDay: 'day', icon: 'wi-day-sunny-overcast'},
         {name: 'partly-cloudy-day', timeOfDay: 'day', icon: 'wi-day-sunny-overcast'},
         {name: 'partly-cloudy-night', timeOfDay: 'night', icon: 'night-partly-cloudy'}
     ];
