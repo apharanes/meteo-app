@@ -8,8 +8,7 @@ define([
 	return Marionette.AppRouter.extend({
 		appRoutes: {
 			'': 'showPage',
-			'page/:pageName': 'showPage',
-            'hi': 'hello'
+			'page/:pageName': 'showPage'
 		}
 	});
 });
