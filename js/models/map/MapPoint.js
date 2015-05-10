@@ -31,12 +31,6 @@ define([
             self.city = options.city;
             self.mapPoint = self.attributes;
             self.set({placeId: options.placeId});
-
-            self.fetchWeatherInfo()
-                .success(function (result) {
-                    self.parseMapPoint(result);
-                    self.renderMapPointInfoWindowContent();
-                });
         },
 
         fetchWeatherInfo: function () {

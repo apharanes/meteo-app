@@ -31,7 +31,9 @@ define([
             self.marker.setMap(self.map);
 
             self.model.fetchWeatherInfo()
-                .then(function () {
+                .success(function (result) {
+                    self.model.parseMapPoint(result);
+                    self.model.renderMapPointInfoWindowContent();
                     self.mapPoint.infoWindow.open(self.map, self.marker);
                 });
         }
