@@ -133,7 +133,9 @@ define([
             var self = this;
 
             //self.map.panTo(marker);
-            var mapPointView = new MapPointView({map: self.map, marker: marker});
+            var mapPoint = new MapPoint(marker);
+            var mapPointView = new MapPointView({map: self.map, model: mapPoint, marker: marker});
+            self.mapPointCollection.add(mapPoint);
         },
 
         /**

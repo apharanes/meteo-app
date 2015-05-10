@@ -21,7 +21,7 @@ define([
 
             self.map = options.map;
             self.marker = options.marker;
-            self.model = new MapPoint(self.marker);
+            self.model = options.model;
             self.mapPoint = self.model.attributes;
 
             self.render();
