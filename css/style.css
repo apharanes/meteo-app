@@ -78,6 +78,12 @@ body {
     background: #dadada;
 }
 
+.city-weather-icon {
+    font-size: 50px;
+    position: absolute;
+    right: 0;
+}
+
 .sidebar {
     margin-top: 60px;
     width: 15%;
