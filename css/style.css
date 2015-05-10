@@ -69,24 +69,27 @@ body {
     height: 500px;
 }
 
+/* City List styles */
 .city {
     padding: 10px;
-    border: 1px solid #dadada;
+    margin-bottom: 15px;
 }
 
 .city .title {
-    background: #dadada;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Map InfoWindow styles */
+.city-title {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .city-weather-icon {
     font-size: 50px;
     position: absolute;
     right: 0;
-}
-
-.city-title {
-    font-size: 16px;
-    font-weight: bold;
 }
 
 .sidebar {
