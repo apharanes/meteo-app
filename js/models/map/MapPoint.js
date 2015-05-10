@@ -90,7 +90,7 @@ define([
                 ' <label>Weather:</label> '+
                 self.renderWeatherIcon(mapPoint.weatherInfo.icon, Date.now(), mapPoint.timezone) + ' ' + mapPoint.weatherInfo.summary +'<br />' +
                 '<label>Temperature:</label> ' + self.renderTemp(mapPoint.weatherInfo.temp,'celsius') + '<br />' +
-                '<label>Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
+                '<label>Local Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
 
             mapPoint.infoWindow.setContent(content);
         },
