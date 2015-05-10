@@ -67,6 +67,8 @@ define([
                 var city = self.onPlaceChanged();
                 self.addCity(city);
             });
+
+            self.setDefaultLocationOnMap();
         },
 
         /**
@@ -80,19 +82,9 @@ define([
                 title: self.defaultCenter.title
             });
 
+            self.addCity(marker);
             self.addMapPoint(marker);
-        },
 
-        /**
-         * Rerender Cities on map
-         */
-        setCitiesOnMap: function () {
-            var self = this;
-
-            var mapPoints = [];
-            _.each(self.cityCollection.models, function(city) {
-                mapPoints.push(new MapPointView({map: self.map, model: city.attributes}));
-            });
         },
 
         /**
@@ -158,8 +150,6 @@ define([
 
             // Setup elements after bootstrapping of MapView
             self.initializeMap();
-            self.setDefaultLocationOnMap();
-            self.setCitiesOnMap();
         }
     });
 });
