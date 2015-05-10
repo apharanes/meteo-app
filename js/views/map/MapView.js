@@ -7,13 +7,14 @@ define([
     'underscore',
     'jquery',
     'templates',
+    'googleMapStyle',
     'utility',
     'weatherUtility',
     'views/map/MapPointView',
     'models/map/MapPoint',
     'collections/MapPointCollection',
     'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=places'
-], function (Marionette, _, $, templates, utility, WeatherUtility, MapPointView, MapPoint, MapPointCollection) {
+], function (Marionette, _, $, templates, googleMapStyle, utility, WeatherUtility, MapPointView, MapPoint, MapPointCollection) {
     'use strict';
 
     // load google.maps
@@ -43,7 +44,8 @@ define([
             var mapOptions = {
                 center: self.defaultCenterPosition,
                 zoom: 6,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                styles: googleMapStyle
             };
 
             // Initialize Google Maps and Google Places
