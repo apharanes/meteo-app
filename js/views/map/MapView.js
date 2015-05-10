@@ -129,7 +129,7 @@ define([
             var self = this;
 
             //self.map.panTo(marker);
-            var mapPoint = new MapPoint(marker);
+            var mapPoint = new MapPoint({city: marker});
             var mapPointView = new MapPointView({map: self.map, model: mapPoint, marker: marker});
             self.mapPointCollection.add(mapPoint);
         },

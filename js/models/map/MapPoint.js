@@ -6,8 +6,7 @@ define([
     'backbone',
     'jquery',
     'utility',
-    'weatherUtility',
-    'async!https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=places'
+    'weatherUtility'
 ], function (Backbone, $, utility, WeatherUtility) {
 
     return Backbone.Model.extend({
@@ -26,11 +25,17 @@ define([
             timezone: ''
         },
 
-        initialize: function (city) {
+        initialize: function (options) {
             var self = this;
 
-            self.city = city;
-            self.fetchWeatherInfo(city);
+            self.city = options.city;
+            self.mapPoint = self.attributes;
+            self.set({placeId: options.placeId});
+
+            self.fetchWeatherInfo()
+                .success(function (result) {
+                    self.parseMapPoint(result);
+                });
         },
 
         fetchWeatherInfo: function () {
@@ -39,24 +44,25 @@ define([
 
             return $.ajax({
                 url: 'https://api.forecast.io/forecast/223ac36a3da5993f7f14cbf3e35a399a/'+city.position.k+','+city.position.D,
-                dataType: 'jsonp',
-                success: function (result) {
-
-                    // Fetch only latest weather data for city
-                    var latestWeatherInfo = self.parseWeatherResults(result);
-
-                    self.set({title: city.title});
-                    self.set({latitude: city.position.k});
-                    self.set({longitude: city.position.D});
-                    self.set({weatherInfo: latestWeatherInfo});
-                    self.set({timezone: result.timezone});
-                    self.set({infoWindow: new google.maps.InfoWindow({
-                        content: ''
-                    })});
-
-                    self.renderMapPointInfoWindowContent();
-                }
+                dataType: 'jsonp'
             });
+        },
+
+        parseMapPoint: function (result) {
+            var self = this;
+            var city = self.city;
+            var latestWeatherInfo = self.parseWeatherResults(result);
+
+            self.set({name: city.title});
+            self.set({latitude: city.position.k});
+            self.set({longitude: city.position.D});
+            self.set({weatherInfo: latestWeatherInfo});
+            self.set({timezone: result.timezone});
+            self.set({infoWindow: new google.maps.InfoWindow({
+                content: ''
+            })});
+
+            self.renderMapPointInfoWindowContent();
         },
 
         /**
@@ -82,17 +88,16 @@ define([
          * @param mapPoint
          */
         renderMapPointInfoWindowContent: function () {
-            var self = this,
-                mapPoint = self.attributes;
+            var self = this;
 
             var content =
-                '<label>City:</label> ' + mapPoint.title +'<br />' +
+                '<label>City:</label> ' + self.mapPoint.name +'<br />' +
                 ' <label>Weather:</label> '+
-                self.renderWeatherIcon(mapPoint.weatherInfo.icon, Date.now(), mapPoint.timezone) + ' ' + mapPoint.weatherInfo.summary +'<br />' +
-                '<label>Temperature:</label> ' + self.renderTemp(mapPoint.weatherInfo.temp,'celsius') + '<br />' +
-                '<label>Local Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(mapPoint.timezone);
+                self.renderWeatherIcon(self.mapPoint.weatherInfo.icon, Date.now(), self.mapPoint.timezone) + ' ' + self.mapPoint.weatherInfo.summary +'<br />' +
+                '<label>Temperature:</label> ' + self.renderTemp(self.mapPoint.weatherInfo.temp,'celsius') + '<br />' +
+                '<label>Local Time:</label> ' + utility.convertTimeZoneToHumanReadableFormat(self.mapPoint.timezone);
 
-            mapPoint.infoWindow.setContent(content);
+            self.mapPoint.infoWindow.setContent(content);
         },
 
         /**
