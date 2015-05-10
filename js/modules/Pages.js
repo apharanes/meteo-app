@@ -16,8 +16,6 @@ define([
 
             this.router = new Router({ controller: Controller });
         });
-
-
     });
 
 //    PagesModule.addFinalizer(function(){

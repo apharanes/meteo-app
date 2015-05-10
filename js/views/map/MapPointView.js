@@ -5,10 +5,8 @@
 define([
     'marionette',
     'templates',
-    'models/map/MapPoint',
-    'utility',
-    'weatherUtility'
-], function (Marionette, templates, MapPoint, utility, WeatherUtility) {
+    'models/map/MapPoint'
+], function (Marionette, templates, MapPoint) {
     'use strict';
 
     return Marionette.ItemView.extend({
