@@ -30,6 +30,9 @@ define([
 
             self.marker.setMap(self.map);
 
+            /**
+             * Fetch weather data from external sources and render into view
+             */
             self.model.fetchWeatherInfo()
                 .success(function (result) {
                     self.model.parseMapPoint(result);

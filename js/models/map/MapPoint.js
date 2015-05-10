@@ -33,6 +33,10 @@ define([
             self.set({placeId: options.placeId});
         },
 
+        /**
+         * Fetch weather info from ForecastIO API
+         * @returns {*}
+         */
         fetchWeatherInfo: function () {
             var self = this;
             var city = self.city;
@@ -43,6 +47,10 @@ define([
             });
         },
 
+        /**
+         * Parse JSON result from API into useable MapPoint model
+         * @param result
+         */
         parseMapPoint: function (result) {
             var self = this;
             var city = self.city;
