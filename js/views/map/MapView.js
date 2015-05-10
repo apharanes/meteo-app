@@ -114,15 +114,19 @@ define([
         },
 
         /**
-         * Add City instance to CityCollection and fetch weather data from weather API
+         * Add City instance from Google Maps to CityCollection
          * @param city
          */
         addCity: function (city) {
             var self = this;
 
-            self.cityCollection.add({ title: city.title, latitude: city.position.k, longitude: city.position.D});
+            var newCity = {
+                title: city.title,
+                latitude: city.position.k,
+                longitude: city.position.D
+            };
 
-            // Uses Forecast.IO API
+            self.cityCollection.add(newCity);
         },
 
         /**
